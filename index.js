@@ -1,6 +1,8 @@
 var _ = require("lodash");
 var tfIdf = require("tf-idf-wiki-lists").tfIdf;
 var normalize = require("./lib/normalizeType");
+var rank = require("./lib/rankTypes");
+var crossLists = require("./lib/crossLists");
 var abstracts = require("./lib/abstracts");
 
 var normalizeTfIdfResults = function(tfIdfResults) {
@@ -21,9 +23,9 @@ var idfPromise = new Promise(function(resolve) {
     resolve(normalizeTfIdfResults(results));
   });
 })
-.then(function(results) { 
+.then(function(results) {
   return _(results)
-    .map(function(result) { 
+    .map(function(result) {
       var norm = normalize(result.type);
       if (norm.valid) {
         result.normalized = norm.normalized;
@@ -37,8 +39,22 @@ var idfPromise = new Promise(function(resolve) {
     .value();
 });
 
-idfPromise.then(function(results) {  
+idfPromise.then(function(tfIdfList) {
   abstracts(resources).then(function(abstracts) {
-    console.log(results, abstracts);
+    var titles = "";
+
+    var textEvidenceList = tfIdfList.map(function(result) {
+      var score = 0;
+      _.each(result.normalized, function(term) {
+        score += rank(term, titles , abstracts).score;
+      });
+
+      return { type: result.type, score: score };
+    });
+
+    var crossedResults = crossLists(tfIdfList, textEvidenceList);
+
+    console.log('Ranked results: ');
+    console.log(crossedResults);
   });
 });
