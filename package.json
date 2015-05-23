@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/01Track1mp3/wiki-list-ranking#readme",
   "dependencies": {
-    "lodash": "^3.9.1"
+    "lodash": "^3.9.1",
+    "tf-idf-wiki-lists": "git+https://github.com/01Track1mp3/tf-idf-wiki-lists.git"
   }
 }
