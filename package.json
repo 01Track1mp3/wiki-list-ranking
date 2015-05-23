@@ -1,0 +1,19 @@
+{
+  "name": "wiki-list-ranking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://01Track1mp3@github.com/01Track1mp3/wiki-list-ranking.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/01Track1mp3/wiki-list-ranking/issues"
+  },
+  "homepage": "https://github.com/01Track1mp3/wiki-list-ranking"
+}
