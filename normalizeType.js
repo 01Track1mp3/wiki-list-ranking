@@ -8,6 +8,7 @@ function normalize(type) {
     // Cut specifier and split up camel case
     type = type.replace('dbpedia-owl:', '');
     type = type.replace(/([a-z](?=[A-Z]))/g, '$1 ');
+    type = type.toLowerCase();
     return type.split(' ');
 }
 
