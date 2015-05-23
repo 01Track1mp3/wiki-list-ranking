@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/01Track1mp3/wiki-list-ranking#readme",
   "dependencies": {
+    "bluebird": "^2.9.25",
     "lodash": "^3.9.1",
+    "sparqler": "git://github.com/01track1mp3/sparqler.git",
     "tf-idf-wiki-lists": "git+https://github.com/01Track1mp3/tf-idf-wiki-lists.git"
   }
 }
