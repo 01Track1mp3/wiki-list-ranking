@@ -31,8 +31,8 @@ var createMapFromShapeWithIteratees = function(shape, keyIteratee, valueIteratee
 
 var createMapFromShape = function(shape, keyName, valueName) {
   return createMapFromShapeWithIteratees(
-    shape, 
-    function(object) { return object[keyName]; }, 
+    shape,
+    function(object) { return object[keyName]; },
     function(object) { return object[valueName]; }
   );
 };
@@ -53,7 +53,7 @@ var groupResultsByMapAndFilter = function(results, groupingMap, key, mapKey) {
 
 var promisedTfIdf = function(resources) {
   return new Promise(function(resolve) {
-    tfIdf(resources, function(results, counts) { 
+    tfIdf(resources, function(results, counts) {
       resolve(results);
       tfIdfCounts = counts;
     });
@@ -128,14 +128,22 @@ var fetchAndStoreTitles = function() {
 var rankTextEvidence = function() {
   return tfIdfResults.map(function(result) {
     var score = _.reduce(result.stemmed, function(score, stemmedTerm) {
-      return score + rank(stemmedTerm, titleResults[result.type], abstractResults[result.type]).score;
+      var stemmedScore = rank(stemmedTerm, titleResults[result.type], abstractResults[result.type]).score;
+
+      /* Do not increase the score when only parts of a type are found in the document */
+      if (stemmedScore === 0)
+        return 0;
+      return score + stemmedScore;
     }, 0);
+
     return { type: result.type, score: score };
   });
 };
 
 var computeRanking = function() {
   var textEvidenceList = rankTextEvidence();
+  console.log('TextEvidence: ');
+  console.log(textEvidenceList);
   var crossedResults = crossLists(tfIdfResults, textEvidenceList);
 
   console.log('Ranked results: ');
