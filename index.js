@@ -127,23 +127,15 @@ var fetchAndStoreTitles = function() {
 
 var rankTextEvidence = function() {
   return tfIdfResults.map(function(result) {
-    var score = _.reduce(result.stemmed, function(score, stemmedTerm) {
-      var stemmedScore = rank(stemmedTerm, titleResults[result.type], abstractResults[result.type]).score;
-
-      /* Do not increase the score when only parts of a type are found in the document */
-      if (stemmedScore === 0)
-        return 0;
-      return score + stemmedScore;
-    }, 0);
-
-    return { type: result.type, score: score };
+    var scores = result.stemmed.map(function(stemmedTerm) {
+      return rank(stemmedTerm, titleResults[result.type], abstractResults[result.type]).score;
+    });
+    return { type: result.type, score: _.min(scores) };
   });
 };
 
 var computeRanking = function() {
   var textEvidenceList = rankTextEvidence();
-  console.log('TextEvidence: ');
-  console.log(textEvidenceList);
   var crossedResults = crossLists(tfIdfResults, textEvidenceList);
 
   console.log('Ranked results: ');
