@@ -154,7 +154,7 @@ var rankTextEvidence = function() {
 var rankTextEvidenceParent = function() {
   return tfIdfResults.map(function(result) {
     var scores = result.stemmed.map(function(stemmedTerm) {
-      return rank(stemmedTerm, parent.title, parent.abstract).score;
+      return rank(stemmedTerm, [parent.title], [parent.abstract]).score;
     });
     return { type: result.type, score: _.min(scores) };
   });
@@ -165,7 +165,16 @@ var computeRanking = function() {
   var textEvidenceList = rankTextEvidence();
   var crossedResults = crossLists(tfIdfResults, textEvidenceList, parentTextEvidenceList);
 
-  console.log('Ranked results: ');
+
+  console.log('TfIdfResults: ');
+  console.log(tfIdfResults.map(function(resource) {
+    return {type: resource.type, score: resource.score};
+  }));
+  console.log('\nTextEvidenceResults: ');
+  console.log(textEvidenceList);
+  console.log('\nParentEvidenceResults: ');
+  console.log(parentTextEvidenceList);
+  console.log('\nRanked results: ');
   console.log(crossedResults);
 };
 
