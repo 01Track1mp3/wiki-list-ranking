@@ -9,10 +9,13 @@ var crossLists = require("./lib/crossLists");
 var Requests = require("./lib/requests");
 
 // global variables
-var resources = require("tf-idf-wiki-lists").resources.donalds;
+var resources = require("tf-idf-wiki-lists").resources.nba;
+var parentResource = ['http://dbpedia.org/resource/Lists_of_National_Basketball_Association_players'];
+//var parentResource = ['http://dbpedia.org/resource/List_of_Donalds'];
 var tfIdfCounts = null; // use this to access counts of the original resource list
 var tfIdfResults = null;
 var abstractResults = null;
+var parent = {abstract: null, title: null};
 
 // setup code
 natural.PorterStemmer.attach();
@@ -105,6 +108,13 @@ var fetchAndStoreAbstracts = function() {
     .then(storeAbstracts);
 };
 
+var fetchAndStoreParentAbstract = function() {
+  return Requests.abstracts(parentResource)
+    .then(function(response) {
+      parent.abstract = response[0].abstract;
+    });
+};
+
 //== Title Fetching
 
 var storeTitles = function(results) {
@@ -123,6 +133,13 @@ var fetchAndStoreTitles = function() {
     .then(storeTitles);
 };
 
+var fetchAndStoreParentTitle = function() {
+  return Requests.titles(parentResource)
+    .then(function(response) {
+      parent.title = response[0].title;
+    });
+};
+
 //== List Crossing
 
 var rankTextEvidence = function() {
@@ -134,9 +151,19 @@ var rankTextEvidence = function() {
   });
 };
 
+var rankTextEvidenceParent = function() {
+  return tfIdfResults.map(function(result) {
+    var scores = result.stemmed.map(function(stemmedTerm) {
+      return rank(stemmedTerm, parent.title, parent.abstract).score;
+    });
+    return { type: result.type, score: _.min(scores) };
+  });
+};
+
 var computeRanking = function() {
+  var parentTextEvidenceList = rankTextEvidenceParent();
   var textEvidenceList = rankTextEvidence();
-  var crossedResults = crossLists(tfIdfResults, textEvidenceList);
+  var crossedResults = crossLists(tfIdfResults, textEvidenceList, parentTextEvidenceList);
 
   console.log('Ranked results: ');
   console.log(crossedResults);
@@ -145,6 +172,8 @@ var computeRanking = function() {
 /** START THE RANKING **/
 
 fetchAndStoreTfIdf()
+  .then(fetchAndStoreParentAbstract)
+  .then(fetchAndStoreParentTitle)
   .then(fetchAndStoreAbstracts)
   .then(fetchAndStoreTitles)
   .then(computeRanking);
