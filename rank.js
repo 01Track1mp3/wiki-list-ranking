@@ -2,7 +2,7 @@
 var _ = require("lodash");
 var natural = require("natural");
 var tfIdf = require("tf-idf-wiki-lists").tfIdf;
-var Promise = require("blubird");
+var Promise = require("bluebird");
 
 // internal packages
 var rank = require("./lib/rankTypes");
