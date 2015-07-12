@@ -8,19 +8,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/01Track1mp3/wiki-list-ranking.git"
+    "url": "git+https://github.com/mischkew/wiki-list-ranking.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/01Track1mp3/wiki-list-ranking/issues"
+    "url": "https://github.com/mischkew/wiki-list-ranking/issues"
   },
-  "homepage": "https://github.com/01Track1mp3/wiki-list-ranking#readme",
+  "homepage": "https://github.com/mischkew/wiki-list-ranking#readme",
   "dependencies": {
     "bluebird": "^2.9.25",
     "lodash": "^3.9.1",
-    "sparqler": "git://github.com/01track1mp3/sparqler.git",
+    "sparqler": "git://github.com/mischkew/sparqler.git",
     "natural": "^0.2.1",
-    "tf-idf-wiki-lists": "git+https://github.com/01Track1mp3/tf-idf-wiki-lists.git"
+    "tf-idf-wiki-lists": "git+https://github.com/mischkew/tf-idf-wiki-lists.git"
   }
 }
