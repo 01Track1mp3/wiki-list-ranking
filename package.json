@@ -21,6 +21,6 @@
     "lodash": "^3.9.1",
     "sparqler": "git://github.com/mischkew/sparqler.git",
     "natural": "^0.2.1",
-    "tf-idf-wiki-lists": "git+https://github.com/mischkew/tf-idf-wiki-lists.git"
+    "tf-idf-wiki-lists": "git+https://github.com/Wikilist-Extraction/tf-idf-wiki-lists.git"
   }
 }
